@@ -6,13 +6,13 @@
 
   首先，Node并不是一门语言，而是一种JavaScript的运行环境，使JavaScript脱离浏览器的局限，在服务端也有一定的影响力。Node构成与Chrome类似，除了没有WebKit 和HTML等支持。node基于事件驱动来服务，它可以连接数据库，搭建websocket服务端，玩转多进程等。
 
-  ![image-20200928202424042](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928202424042.png)
+  ![image-20200928202424042](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928202424042.png)
 
   它的特点：
 
   1. 异步I/O：每次调用无须等待之前的I/O调用结束。
 
-     ![image-20200928203019494](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928203019494.png)
+     ![image-20200928203019494](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928203019494.png)
 
      这样多次调用的耗时取决于最慢的那个任务耗时。
 
@@ -22,7 +22,7 @@
 
   4. 跨平台：通过libuv解决平台差异
 
-     ![image-20200928203757602](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928203757602.png)
+     ![image-20200928203757602](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928203757602.png)
 
 - node应用场景
 
@@ -48,7 +48,7 @@
 
 - 核心模块引入：从调JavaScript到底层C++
 
-  ![image-20200928205820820](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928205820820.png)
+  ![image-20200928205820820](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928205820820.png)
 
 ## 3.异步I/O
 
@@ -69,19 +69,19 @@
 
 - read：最原始 性能最低的方法，重复调用检查I/O状态来获取完整数据的读取。
 
-  ![image-20200921133917566](E:\Git工作区\深入浅出node\image\image-20200921133917566.png)
+  ![image-20200921133917566](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921133917566.png)
 
 - select：在read的基础上改进，通过对文件描述符的事件状态来判断，由于它采用1024长度的数组来存储状态，所以它最多可同时检查1024个文件描述符。
 
-  ![image-20200921134049320](E:\Git工作区\深入浅出node\image\image-20200921134049320.png)
+  ![image-20200921134049320](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921134049320.png)
 
 - poll：它采用链表避免数组长度的限制，其次它能避免不需要的检查，但当文件描述符较多时，性能较低。
 
-  ![image-20200921134415647](E:\Git工作区\深入浅出node\image\image-20200921134415647.png)
+  ![image-20200921134415647](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921134415647.png)
 
 - epoll：该方案是Linux下效率最高的事件通知机制，在轮询时如果没有检查到I/O事件，将会进行休眠，直到事件将它唤醒，它真实利用事件通知，执行回调 不是遍历查询 不会浪费CPU，执行效率较高。
 
-  ![image-20200921134750888](E:\Git工作区\深入浅出node\image\image-20200921134750888.png)
+  ![image-20200921134750888](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921134750888.png)
 
 - kqueue：该方案实现与epoll类似，不过是在FreeBSD系统下实现。
 
@@ -89,23 +89,23 @@
 
 **理想中的异步I/O：**
 
-![image-20200921135127431](E:\Git工作区\深入浅出node\image\image-20200921135127431.png)
+![image-20200921135127431](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921135127431.png)
 
 Linux存在一方式（AIO）就是通过信号或回调传递数据的，不过AIO仅支持内核I/O的0_DIRECT方式读取，无法读取系统缓存。
 
 **现实中的异步I/O：**
 
-![image-20200921140146405](E:\Git工作区\深入浅出node\image\image-20200921140146405.png)
+![image-20200921140146405](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921140146405.png)
 
 采用线程池，通过线程之间的通信将I/O得到的数据进行传递，模拟实现异步。
 
 **Node的异步I/O：**事件循环，观察者，请求对象，I/O线程池
 
-![image-20200921174857986](E:\Git工作区\深入浅出node\image\image-20200921174857986.png)
+![image-20200921174857986](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921174857986.png)
 
 事件循环
 
-![image-20200921143304773](E:\Git工作区\深入浅出node\image\image-20200921143304773.png)
+![image-20200921143304773](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200921143304773.png)
 
 观察者：判断是否有事件需要处理的过程就是向观察者轮询。
 
@@ -115,7 +115,7 @@ Linux存在一方式（AIO）就是通过信号或回调传递数据的，不过
 
 1. 定时器（非精准）
 
-![image-20200922084641077](E:\Git工作区\深入浅出node\image\image-20200922084641077.png)
+![image-20200922084641077](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200922084641077.png)
 
 调用setTimeout，setInterval 创建的定时器插入定时器观察者内部的红黑树。每次循环从该红黑树迭代取出定时器对象，检查是否超过定时，如果超过就形成事件，立即执行回调。两个的区别在于setInterval 是重复地检测。
 
@@ -123,13 +123,13 @@ Linux存在一方式（AIO）就是通过信号或回调传递数据的，不过
 
 为了立即执行异步任务，调用next Tick将回调放入队列，下一轮Tick中取出执行。时间复杂度为O(1),而定时器采用红黑树，时间复杂度为O（lg n)，相比下process.nextTick更轻量高效。
 
-![image-20200922090133410](E:\Git工作区\深入浅出node\image\image-20200922090133410.png)
+![image-20200922090133410](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200922090133410.png)
 
 3.setImmediate()
 
 setImmediate与process.nextTick类似，都是延迟执行，但nextTick回调函数保存至数组，setImmediate则保存在链表，nextTick优先级高于setImmediate。这是由于事件循环观察者检查有先后，process.nextTick属于idle观察者，setImmediate属于check观察者。优先级：idle观察者>I/O观察者>check观察者。
 
-![image-20200922091110606](E:\Git工作区\深入浅出node\image\image-20200922091110606.png)
+![image-20200922091110606](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200922091110606.png)
 
 ## 4.异步编程
 
@@ -138,7 +138,7 @@ setImmediate与process.nextTick类似，都是延迟执行，但nextTick回调�
   
   2. Promise/Deferred模式：Deferred主要用于内部，维护异步模型的状态，Promise作用于外部，通过then()方法暴露给外部添加自定义逻辑。
 
-     ![image-20200928214203999](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928214203999.png)
+     ![image-20200928214203999](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928214203999.png)
   
      ```
      // Deferred实现
@@ -219,15 +219,15 @@ setImmediate与process.nextTick类似，都是延迟执行，但nextTick回调�
 
    -  Mark-Sweep & Mark-Compact 
 
-     ![image-20200928215651219](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928215651219.png)
+     ![image-20200928215651219](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928215651219.png)
 
-     ![image-20200928215735206](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928215735206.png)
+     ![image-20200928215735206](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928215735206.png)
 
 - Scavenge
 
-  ![image-20200928220014481](C:\Users\DELL\AppData\Roaming\Typora\typora-user-images\image-20200928220014481.png)
+  ![image-20200928220014481](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928220014481.png)
 
-![image-20200923135728747](E:\Git工作区\深入浅出node\image\image-20200923135728747.png)
+![image-20200923135728747](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200923135728747.png)
 
 - buffer对象不经V8内存分配机制，不会有堆内存大小限制。
 
@@ -263,11 +263,11 @@ data = data.toString() + chunk.toString();
 
 当我们读取中文静夜思来测试时，有可能产生
 
-![image-20200924140621994](E:\Git工作区\深入浅出node\image\image-20200924140621994.png)
+![image-20200924140621994](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200924140621994.png)
 
 原因：
 
-![image-20200924140716694](E:\Git工作区\深入浅出node\image\image-20200924140716694.png)
+![image-20200924140716694](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200924140716694.png)
 
 通过setEncoding()，ཨstring_decoder模块可以解决表面上的问题 ，但不改变实质。正确的拼接方式应该是用数组存储buffer，由小合并成大buffer。
 
@@ -280,7 +280,7 @@ data = data.toString() + chunk.toString();
 
 - webcocket
 
-  ![image-20200925135725261](E:\Git工作区\深入浅出node\image\image-20200925135725261.png)
+  ![image-20200925135725261](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200925135725261.png)
 
 ## 8.构建web应用
 
@@ -295,9 +295,9 @@ data = data.toString() + chunk.toString();
 
 - **子进程**
 
-![image-20200927134718811](E:\Git工作区\深入浅出node\image\image-20200927134718811.png)
+![image-20200927134718811](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200927134718811.png)
 
-![image-20200927134921824](E:\Git工作区\深入浅出node\image\image-20200927134921824.png)
+![image-20200927134921824](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200927134921824.png)
 
 补充：JavaScript文件通过execFile 必须在首行添加，才能成为可直接执行文件。
 
@@ -307,15 +307,15 @@ data = data.toString() + chunk.toString();
 
 - **进程间通信**
 
-  ![image-20200927135920039](E:\Git工作区\深入浅出node\image\image-20200927135920039.png)
+  ![image-20200927135920039](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200927135920039.png)
 
 补充：只有子进程为node进程时，才会根据环境变量去连接IPC通道。其他类型无法实现进程间通信。
 
 - 句柄传递
 
-  ![image-20200928085804898](E:\Git工作区\深入浅出node\image\image-20200928085804898.png)
+  ![image-20200928085804898](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928085804898.png)
 
-![image-20200928085825502](E:\Git工作区\深入浅出node\image\image-20200928085825502.png)
+![image-20200928085825502](https://github.com/Hjw52/Node_learn/blob/master/image/image-20200928085825502.png)
 
 - 集群模块
 
